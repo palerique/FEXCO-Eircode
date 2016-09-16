@@ -1,0 +1,29 @@
+{
+    "generator-jhipster": {
+        "jhipsterVersion": "3.7.0",
+        "baseName": "FEXCO_Eircode",
+        "packageName": "br.com.sitedoph.fexco.eircode",
+        "packageFolder": "br/com/sitedoph/fexco/eircode",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "hibernateCache": "ehcache",
+        "clusteredHttpSession": "no",
+        "websocket": "no",
+        "databaseType": "sql",
+        "devDatabaseType": "h2Disk",
+        "prodDatabaseType": "mysql",
+        "searchEngine": "no",
+        "buildTool": "maven",
+        "enableSocialSignIn": true,
+        "jwtSecretKey": "fefe1a8193195a23171ea3fa2e69ae49a838e10d",
+        "useSass": false,
+        "applicationType": "monolith",
+        "testFrameworks": [
+            "gatling",
+            "cucumber",
+            "protractor"
+        ],
+        "jhiPrefix": "jhi",
+        "enableTranslation": false
+    }
+}
