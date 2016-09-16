@@ -1,6 +1,6 @@
-[![Build Status - DEV](https://travis-ci.org/palerique/FEXCO-Eircode.svg?branch=dev)](https://travis-ci.org/palerique/FEXCO-Eircode)
+MASTER [![Build Status - MASTER](https://travis-ci.org/palerique/FEXCO-Eircode.svg?branch=master)](https://travis-ci.org/palerique/FEXCO-Eircode)
 
-[![Build Status - MASTER](https://travis-ci.org/palerique/FEXCO-Eircode.svg?branch=master)](https://travis-ci.org/palerique/FEXCO-Eircode)
+DEV [![Build Status - DEV](https://travis-ci.org/palerique/FEXCO-Eircode.svg?branch=dev)](https://travis-ci.org/palerique/FEXCO-Eircode)
 
 # FEXCO Software Group
 
