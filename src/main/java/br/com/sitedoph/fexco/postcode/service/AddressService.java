@@ -4,6 +4,8 @@ import br.com.sitedoph.fexco.postcode.domain.Address;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Address.
  */
@@ -39,4 +41,6 @@ public interface AddressService {
      * @param id the id of the entity
      */
     void delete(String id);
+
+    void saveAll(List<Address> addresses);
 }

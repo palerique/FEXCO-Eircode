@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Service Implementation for managing Address.
@@ -41,6 +42,25 @@ public class AddressServiceImpl implements AddressService {
      * @return the list of entities
      */
     public Page<Address> findAll(Pageable pageable) {
+
+        //TODO: testing REST service consuming!
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<List<Address>> rateResponse =
+//            restTemplate.exchange("http://ws.postcoder.com/pcw/PCW45-12345-12345-1234X/address/uk/NR147PZ?format=json&lines=3",
+//                                  HttpMethod.GET, null, new ParameterizedTypeReference<List<Address>>() {
+//                });
+//        List<Address> addresses = rateResponse.getBody();
+//
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//        log.info(addresses.toString());
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//        log.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+//
+//        this.saveAll(addresses);
+
         log.debug("Request to get all Addresses");
         Page<Address> result = addressRepository.findAll(pageable);
         return result;
@@ -66,5 +86,10 @@ public class AddressServiceImpl implements AddressService {
     public void delete(String id) {
         log.debug("Request to delete Address : {}", id);
         addressRepository.delete(id);
+    }
+
+    @Override
+    public void saveAll(List<Address> addresses) {
+        addressRepository.save(addresses);
     }
 }
