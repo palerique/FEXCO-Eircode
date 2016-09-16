@@ -1,0 +1,114 @@
+<div>
+    <h2><span>Address</span> {{vm.address.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Addressline 1</span></dt>
+        <dd>
+            <span>{{vm.address.addressline1}}</span>
+        </dd>
+        <dt><span>Addressline 2</span></dt>
+        <dd>
+            <span>{{vm.address.addressline2}}</span>
+        </dd>
+        <dt><span>Addressline 3</span></dt>
+        <dd>
+            <span>{{vm.address.addressline3}}</span>
+        </dd>
+        <dt><span>Summaryline</span></dt>
+        <dd>
+            <span>{{vm.address.summaryline}}</span>
+        </dd>
+        <dt><span>Organisation</span></dt>
+        <dd>
+            <span>{{vm.address.organisation}}</span>
+        </dd>
+        <dt><span>Buildingname</span></dt>
+        <dd>
+            <span>{{vm.address.buildingname}}</span>
+        </dd>
+        <dt><span>Premise</span></dt>
+        <dd>
+            <span>{{vm.address.premise}}</span>
+        </dd>
+        <dt><span>Street</span></dt>
+        <dd>
+            <span>{{vm.address.street}}</span>
+        </dd>
+        <dt><span>Dependentlocality</span></dt>
+        <dd>
+            <span>{{vm.address.dependentlocality}}</span>
+        </dd>
+        <dt><span>Posttown</span></dt>
+        <dd>
+            <span>{{vm.address.posttown}}</span>
+        </dd>
+        <dt><span>County</span></dt>
+        <dd>
+            <span>{{vm.address.county}}</span>
+        </dd>
+        <dt><span>Postcode</span></dt>
+        <dd>
+            <span>{{vm.address.postcode}}</span>
+        </dd>
+        <dt><span>Number</span></dt>
+        <dd>
+            <span>{{vm.address.number}}</span>
+        </dd>
+        <dt><span>Pobox</span></dt>
+        <dd>
+            <span>{{vm.address.pobox}}</span>
+        </dd>
+        <dt><span>Departmentname</span></dt>
+        <dd>
+            <span>{{vm.address.departmentname}}</span>
+        </dd>
+        <dt><span>Subbuildingname</span></dt>
+        <dd>
+            <span>{{vm.address.subbuildingname}}</span>
+        </dd>
+        <dt><span>Dependentstreet</span></dt>
+        <dd>
+            <span>{{vm.address.dependentstreet}}</span>
+        </dd>
+        <dt><span>Doubledependentlocality</span></dt>
+        <dd>
+            <span>{{vm.address.doubledependentlocality}}</span>
+        </dd>
+        <dt><span>Recodes</span></dt>
+        <dd>
+            <span>{{vm.address.recodes}}</span>
+        </dd>
+        <dt><span>Morevalues</span></dt>
+        <dd>
+            <span>{{vm.address.morevalues}}</span>
+        </dd>
+        <dt><span>Nextpage</span></dt>
+        <dd>
+            <span>{{vm.address.nextpage}}</span>
+        </dd>
+        <dt><span>Totalresults</span></dt>
+        <dd>
+            <span>{{vm.address.totalresults}}</span>
+        </dd>
+        <dt><span>Latitude</span></dt>
+        <dd>
+            <span>{{vm.address.latitude}}</span>
+        </dd>
+        <dt><span>Longitude</span></dt>
+        <dd>
+            <span>{{vm.address.longitude}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="address-detail.edit({id:vm.address.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

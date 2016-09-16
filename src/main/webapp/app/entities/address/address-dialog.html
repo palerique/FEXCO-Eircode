@@ -1,0 +1,169 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAddressLabel">Create or edit a Address</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.address.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   ng-model="vm.address.id" readonly/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_addressline1">Addressline 1</label>
+            <input type="text" class="form-control" name="addressline1" id="field_addressline1"
+                   ng-model="vm.address.addressline1"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_addressline2">Addressline 2</label>
+            <input type="text" class="form-control" name="addressline2" id="field_addressline2"
+                   ng-model="vm.address.addressline2"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_addressline3">Addressline 3</label>
+            <input type="text" class="form-control" name="addressline3" id="field_addressline3"
+                   ng-model="vm.address.addressline3"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_summaryline">Summaryline</label>
+            <input type="text" class="form-control" name="summaryline" id="field_summaryline"
+                   ng-model="vm.address.summaryline"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_organisation">Organisation</label>
+            <input type="text" class="form-control" name="organisation" id="field_organisation"
+                   ng-model="vm.address.organisation"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_buildingname">Buildingname</label>
+            <input type="text" class="form-control" name="buildingname" id="field_buildingname"
+                   ng-model="vm.address.buildingname"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_premise">Premise</label>
+            <input type="text" class="form-control" name="premise" id="field_premise"
+                   ng-model="vm.address.premise"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_street">Street</label>
+            <input type="text" class="form-control" name="street" id="field_street"
+                   ng-model="vm.address.street"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dependentlocality">Dependentlocality</label>
+            <input type="text" class="form-control" name="dependentlocality" id="field_dependentlocality"
+                   ng-model="vm.address.dependentlocality"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_posttown">Posttown</label>
+            <input type="text" class="form-control" name="posttown" id="field_posttown"
+                   ng-model="vm.address.posttown"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_county">County</label>
+            <input type="text" class="form-control" name="county" id="field_county"
+                   ng-model="vm.address.county"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_postcode">Postcode</label>
+            <input type="text" class="form-control" name="postcode" id="field_postcode"
+                   ng-model="vm.address.postcode"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_number">Number</label>
+            <input type="text" class="form-control" name="number" id="field_number"
+                   ng-model="vm.address.number"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_pobox">Pobox</label>
+            <input type="text" class="form-control" name="pobox" id="field_pobox"
+                   ng-model="vm.address.pobox"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_departmentname">Departmentname</label>
+            <input type="text" class="form-control" name="departmentname" id="field_departmentname"
+                   ng-model="vm.address.departmentname"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_subbuildingname">Subbuildingname</label>
+            <input type="text" class="form-control" name="subbuildingname" id="field_subbuildingname"
+                   ng-model="vm.address.subbuildingname"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dependentstreet">Dependentstreet</label>
+            <input type="text" class="form-control" name="dependentstreet" id="field_dependentstreet"
+                   ng-model="vm.address.dependentstreet"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_doubledependentlocality">Doubledependentlocality</label>
+            <input type="text" class="form-control" name="doubledependentlocality" id="field_doubledependentlocality"
+                   ng-model="vm.address.doubledependentlocality"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_recodes">Recodes</label>
+            <input type="text" class="form-control" name="recodes" id="field_recodes"
+                   ng-model="vm.address.recodes"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_morevalues">Morevalues</label>
+            <input type="checkbox" class="form-control" name="morevalues" id="field_morevalues"
+                   ng-model="vm.address.morevalues"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nextpage">Nextpage</label>
+            <input type="number" class="form-control" name="nextpage" id="field_nextpage"
+                   ng-model="vm.address.nextpage"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_totalresults">Totalresults</label>
+            <input type="number" class="form-control" name="totalresults" id="field_totalresults"
+                   ng-model="vm.address.totalresults"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_latitude">Latitude</label>
+            <input type="text" class="form-control" name="latitude" id="field_latitude"
+                   ng-model="vm.address.latitude"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_longitude">Longitude</label>
+            <input type="text" class="form-control" name="longitude" id="field_longitude"
+                   ng-model="vm.address.longitude"
+            />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
