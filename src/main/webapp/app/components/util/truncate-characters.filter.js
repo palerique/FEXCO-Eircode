@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .filter('characters', characters);
 
     function characters() {

@@ -1,0 +1,17 @@
+version: '2'
+services:
+    fexco_postcode-mongodb:
+        container_name: fexco_postcode-mongodb
+        image: mongo:3.3.12
+        ports:
+            - "27017:27017"
+        command: mongos --configdb fexco_postcode-mongodb-config
+    fexco_postcode-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    fexco_postcode-mongodb-config:
+        image: mongo:mongo:3.3.12
+        container_name: fexco_postcode-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

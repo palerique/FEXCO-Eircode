@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .directive('activeLink', activeLink);
 
     function activeLink() {

@@ -1,4 +1,4 @@
-// Generated on 2016-09-16 using generator-jhipster 3.7.0
+// Generated on 2016-09-16 using generator-jhipster 3.7.1
 'use strict';
 
 var gulp = require('gulp'),
@@ -84,7 +84,7 @@ gulp.task('html', function () {
     return gulp.src(config.app + 'app/**/*.html')
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(templateCache({
-            module: 'fexcoEircodeApp',
+            module: 'fexcoPostcodeApp',
             root: 'app/',
             moduleSystem: 'IIFE'
         }))
@@ -93,7 +93,7 @@ gulp.task('html', function () {
 
 gulp.task('ngconstant:dev', function () {
     return ngConstant({
-        name: 'fexcoEircodeApp',
+        name: 'fexcoPostcodeApp',
         constants: {
             VERSION: util.parseVersion(),
             DEBUG_INFO_ENABLED: true
@@ -107,7 +107,7 @@ gulp.task('ngconstant:dev', function () {
 
 gulp.task('ngconstant:prod', function () {
     return ngConstant({
-        name: 'fexcoEircodeApp',
+        name: 'fexcoPostcodeApp',
         constants: {
             VERSION: util.parseVersion(),
             DEBUG_INFO_ENABLED: false

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('NavbarController', NavbarController);
 
     NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];

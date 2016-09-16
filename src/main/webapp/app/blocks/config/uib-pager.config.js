@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .config(pagerConfig);
 
     pagerConfig.$inject = ['uibPagerConfig', 'paginationConstants'];

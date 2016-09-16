@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .config(compileServiceConfig);
 
     compileServiceConfig.$inject = ['$compileProvider', 'DEBUG_INFO_ENABLED'];

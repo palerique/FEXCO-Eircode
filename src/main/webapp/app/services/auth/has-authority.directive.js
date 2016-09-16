@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .directive('hasAuthority', hasAuthority);
 
     hasAuthority.$inject = ['Principal'];

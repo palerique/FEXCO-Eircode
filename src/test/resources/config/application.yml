@@ -12,29 +12,14 @@
 
 spring:
     application:
-        name: FEXCO_Eircode
+        name: FEXCO_postcode
     jackson:
         serialization.write_dates_as_timestamps: false
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:FEXCO_Eircode;DB_CLOSE_DELAY=-1
-        name:
-        username:
-        password:
-    jpa:
-        database-platform: br.com.sitedoph.fexco.eircode.domain.util.FixedH2Dialect
-        database: H2
-        open-in-view: false
-        show-sql: true
-        hibernate:
-            ddl-auto: none
-            naming:
-                strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
-        properties:
-            hibernate.cache.use_second_level_cache: false
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            hibernate.hbm2ddl.auto: validate
+    data:
+        mongodb:
+            host: localhost
+            port: 27117
+            database: FEXCO_postcode
     mail:
         host: localhost
     mvc:
@@ -66,14 +51,14 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: fefe1a8193195a23171ea3fa2e69ae49a838e10d
+                secret: 8a2327f904e5d791567883a9e41351104bc06d4f
                 # Token is valid 24 hours
                 tokenValidityInSeconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
     swagger:
-        title: FEXCO_Eircode API
-        description: FEXCO_Eircode API documentation
+        title: FEXCO_postcode API
+        description: FEXCO_postcode API documentation
         version: 0.0.1
         termsOfServiceUrl:
         contactName:

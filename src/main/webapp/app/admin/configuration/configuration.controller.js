@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('JhiConfigurationController', JhiConfigurationController);
 
     JhiConfigurationController.$inject = ['$filter', 'JhiConfigurationService'];

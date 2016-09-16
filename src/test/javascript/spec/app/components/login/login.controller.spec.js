@@ -2,7 +2,7 @@
 
 describe('Controller Tests', function () {
 
-    beforeEach(module('fexcoEircodeApp'));
+    beforeEach(module('fexcoPostcodeApp'));
 
     describe('LoginController', function () {
         var $scope, authService;

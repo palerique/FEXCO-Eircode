@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('JhiHealthCheckController', JhiHealthCheckController);
 
     JhiHealthCheckController.$inject = ['JhiHealthService', '$uibModal'];

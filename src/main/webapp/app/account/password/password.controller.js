@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('PasswordController', PasswordController);
 
     PasswordController.$inject = ['Auth', 'Principal'];

@@ -11,7 +11,7 @@
     };
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .component('jhiAlertError', jhiAlertError);
 
     jhiAlertErrorController.$inject = ['$scope', 'AlertService', '$rootScope'];
@@ -36,7 +36,7 @@
             );
         }
 
-        var cleanHttpErrorListener = $rootScope.$on('fexcoEircodeApp.httpError', function (event, httpResponse) {
+        var cleanHttpErrorListener = $rootScope.$on('fexcoPostcodeApp.httpError', function (event, httpResponse) {
             var i;
             event.stopPropagation();
             switch (httpResponse.status) {
@@ -46,8 +46,8 @@
                     break;
 
                 case 400:
-                    var errorHeader = httpResponse.headers('X-fexcoEircodeApp-error');
-                    var entityKey = httpResponse.headers('X-fexcoEircodeApp-params');
+                    var errorHeader = httpResponse.headers('X-fexcoPostcodeApp-error');
+                    var entityKey = httpResponse.headers('X-fexcoPostcodeApp-params');
                     if (errorHeader) {
                         var entityName = entityKey;
                         addErrorAlert(errorHeader, errorHeader, {entityName: entityName});
@@ -58,7 +58,7 @@
                             var convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
                             var fieldName = convertedField.charAt(0).toUpperCase() + convertedField.slice(1);
                             addErrorAlert('Field ' + fieldName + ' cannot be empty', 'error.' + fieldError.message, {fieldName: fieldName});
-                        }
+                    }
                     } else if (httpResponse.data && httpResponse.data.message) {
                         addErrorAlert(httpResponse.data.message, httpResponse.data.message, httpResponse.data);
                     } else {

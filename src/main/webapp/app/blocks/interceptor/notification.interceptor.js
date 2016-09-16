@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .factory('notificationInterceptor', notificationInterceptor);
 
     notificationInterceptor.$inject = ['$q', 'AlertService'];
@@ -15,9 +15,9 @@
         return service;
 
         function response(response) {
-            var alertKey = response.headers('X-fexcoEircodeApp-alert');
+            var alertKey = response.headers('X-fexcoPostcodeApp-alert');
             if (angular.isString(alertKey)) {
-                AlertService.success(alertKey, {param: response.headers('X-fexcoEircodeApp-params')});
+                AlertService.success(alertKey, {param: response.headers('X-fexcoPostcodeApp-params')});
             }
             return response;
         }

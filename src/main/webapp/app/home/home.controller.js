@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('HomeController', HomeController);
 
     HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('UserManagementDeleteController', UserManagementDeleteController);
 
     UserManagementDeleteController.$inject = ['$uibModalInstance', 'entity', 'User'];

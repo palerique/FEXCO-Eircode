@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -21,16 +21,16 @@
                         templateUrl: 'app/admin/user-management/user-management.html',
                         controller: 'UserManagementController',
                         controllerAs: 'vm'
-                    }
+                }
                 }, params: {
                     page: {
                         value: '1',
                         squash: true
-                    },
+                },
                     sort: {
                         value: 'id,asc',
                         squash: true
-                    }
+                }
                 },
                 resolve: {
                     pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
@@ -40,7 +40,7 @@
                             predicate: PaginationUtil.parsePredicate($stateParams.sort),
                             ascending: PaginationUtil.parseAscending($stateParams.sort)
                         };
-                    }]
+                }]
                 }
             })
             .state('user-management-detail', {
@@ -48,7 +48,7 @@
                 url: '/user/:login',
                 data: {
                     authorities: ['ROLE_ADMIN'],
-                    pageTitle: 'FEXCO_Eircode'
+                    pageTitle: 'FEXCO_postcode'
                 },
                 views: {
                     'content@': {
@@ -79,7 +79,7 @@
                                     lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
                                     resetKey: null, authorities: null
                                 };
-                            }
+                        }
                         }
                     }).result.then(function () {
                         $state.go('user-management', null, {reload: true});

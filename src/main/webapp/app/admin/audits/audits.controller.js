@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('AuditsController', AuditsController);
 
     AuditsController.$inject = ['$filter', 'AuditsService', 'ParseLinks'];
@@ -30,12 +30,7 @@
             var fromDate = $filter('date')(vm.fromDate, dateFormat);
             var toDate = $filter('date')(vm.toDate, dateFormat);
 
-            AuditsService.query({
-                page: vm.page - 1,
-                size: 20,
-                fromDate: fromDate,
-                toDate: toDate
-            }, function (result, headers) {
+            AuditsService.query({page: vm.page - 1, size: 20, fromDate: fromDate, toDate: toDate}, function (result, headers) {
                 vm.audits = result;
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');

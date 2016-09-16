@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('UserManagementDetailController', UserManagementDetailController);
 
     UserManagementDetailController.$inject = ['$stateParams', 'User'];

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('RequestResetController', RequestResetController);
 
     RequestResetController.$inject = ['$timeout', 'Auth'];

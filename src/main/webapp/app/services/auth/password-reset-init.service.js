@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .factory('PasswordResetInit', PasswordResetInit);
 
     PasswordResetInit.$inject = ['$resource'];

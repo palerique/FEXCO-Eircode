@@ -11,7 +11,7 @@
     };
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .component('jhiAlert', jhiAlert);
 
     jhiAlertController.$inject = ['$scope', 'AlertService'];

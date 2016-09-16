@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .factory('DateUtils', DateUtils);
 
     DateUtils.$inject = ['$filter'];

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('UserManagementDialogController', UserManagementDialogController);
 
     UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User'];

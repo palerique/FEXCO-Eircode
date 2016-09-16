@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .config(alertServiceConfig);
 
     alertServiceConfig.$inject = ['AlertServiceProvider'];

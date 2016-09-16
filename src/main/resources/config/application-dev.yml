@@ -12,6 +12,8 @@
 
 
 spring:
+    profiles:
+        active: dev,swagger
     devtools:
         restart:
             enabled: true
@@ -19,24 +21,10 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     jackson:
         serialization.indent_output: true
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/fexco_eircode;DB_CLOSE_DELAY=-1
-        name:
-        username: FEXCO_Eircode
-        password:
-    h2:
-        console:
-            enabled: false
-    jpa:
-        database-platform: br.com.sitedoph.fexco.eircode.domain.util.FixedH2Dialect
-        database: H2
-        show-sql: true
-        properties:
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    data:
+        mongodb:
+            uri: mongodb://localhost:27017
+            database: FEXCO_postcode
     mail:
         host: localhost
         port: 25
@@ -47,9 +35,6 @@ spring:
     thymeleaf:
         cache: false
 
-liquibase:
-    contexts: dev
-
 server:
     port: 8080
 
@@ -58,10 +43,6 @@ server:
 # ===================================================================
 
 jhipster:
-    cache: # Hibernate 2nd level cache, used by CacheConfiguration
-        timeToLiveSeconds: 3600
-        ehcache:
-            maxBytesLocalHeap: 16M
     security:
         authentication:
             jwt:
@@ -69,7 +50,7 @@ jhipster:
                 # Token is valid 24 hours
                 tokenValidityInSeconds: 86400
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: FEXCO_Eircode@localhost
+        from: FEXCO_postcode@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
@@ -80,7 +61,7 @@ jhipster:
             enabled: false
             host: localhost
             port: 2003
-            prefix: FEXCO_Eircode
+            prefix: FEXCO_postcode
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             reportFrequency: 60 # in seconds

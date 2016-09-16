@@ -17,27 +17,10 @@ spring:
             enabled: false
         livereload:
             enabled: false
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/FEXCO_Eircode?useUnicode=true&characterEncoding=utf8&useSSL=false
-        name:
-        username: root
-        password:
-        hikari:
-            data-source-properties:
-                cachePrepStmts: true
-                prepStmtCacheSize: 250
-                prepStmtCacheSqlLimit: 2048
-                useServerPrepStmts: true
-    jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        database: MYSQL
-        show-sql: false
-        properties:
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    data:
+        mongodb:
+            uri: mongodb://localhost:27017
+            database: FEXCO_postcode
     mail:
         host: localhost
         port: 25
@@ -45,9 +28,6 @@ spring:
         password:
     thymeleaf:
         cache: true
-
-liquibase:
-    contexts: prod
 
 server:
     port: 8080
@@ -64,18 +44,14 @@ jhipster:
     http:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 1461
-    cache: # Hibernate 2nd level cache, used by CacheConfiguration
-        timeToLiveSeconds: 3600
-        ehcache:
-            maxBytesLocalHeap: 256M
     security:
         authentication:
             jwt:
-                secret: fefe1a8193195a23171ea3fa2e69ae49a838e10d
+                secret: 8a2327f904e5d791567883a9e41351104bc06d4f
                 # Token is valid 24 hours
                 tokenValidityInSeconds: 86400
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: FEXCO_Eircode@localhost
+        from: FEXCO_postcode@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
@@ -86,7 +62,7 @@ jhipster:
             enabled: false
             host: localhost
             port: 2003
-            prefix: FEXCO_Eircode
+            prefix: FEXCO_postcode
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             reportFrequency: 60 # in seconds

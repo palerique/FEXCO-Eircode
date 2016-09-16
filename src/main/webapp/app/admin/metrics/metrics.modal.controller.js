@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('JhiMetricsMonitoringModalController', JhiMetricsMonitoringModalController);
 
     JhiMetricsMonitoringModalController.$inject = ['$uibModalInstance', 'threadDump'];

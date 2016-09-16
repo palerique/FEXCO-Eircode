@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .factory('Principal', Principal);
 
     Principal.$inject = ['$q', 'Account'];

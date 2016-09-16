@@ -15,6 +15,6 @@
     };
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .component('jhiItemCount', jhiItemCount);
 })();

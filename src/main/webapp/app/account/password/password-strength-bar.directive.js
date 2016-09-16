@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .directive('passwordStrengthBar', passwordStrengthBar);
 
     function passwordStrengthBar() {

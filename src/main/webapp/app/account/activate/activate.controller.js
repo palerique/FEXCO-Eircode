@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('fexcoEircodeApp')
+        .module('fexcoPostcodeApp')
         .controller('ActivationController', ActivationController);
 
     ActivationController.$inject = ['$stateParams', 'Auth', 'LoginService'];
