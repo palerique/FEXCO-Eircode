@@ -4,27 +4,25 @@ import br.com.sitedoph.fexco.postcode.FexcoPostcodeApp;
 import br.com.sitedoph.fexco.postcode.domain.Address;
 import br.com.sitedoph.fexco.postcode.repository.AddressRepository;
 import br.com.sitedoph.fexco.postcode.service.AddressService;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.support.NoOpCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FexcoPostcodeApp.class)
-@ContextConfiguration(classes = {FexcoPostcodeApp.class, AddressResourceIntTest.Config.class})
 public class AddressResourceIntTest {
 
     private static final String DEFAULT_ADDRESSLINE_1           = "AAAAA";
@@ -93,22 +90,28 @@ public class AddressResourceIntTest {
     private static final String  UPDATED_LATITUDE     = "BBBBB";
     private static final String  DEFAULT_LONGITUDE    = "AAAAA";
     private static final String  UPDATED_LONGITUDE    = "BBBBB";
-
+    private static RedisServer                           redisServer;
     @Inject
-    private AddressRepository addressRepository;
-
+    private        AddressRepository                     addressRepository;
     @Inject
-    private AddressService addressService;
-
+    private        AddressService                        addressService;
     @Inject
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
+    private        MappingJackson2HttpMessageConverter   jacksonMessageConverter;
     @Inject
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+    private        PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+    private        MockMvc                               restAddressMockMvc;
+    private        Address                               address;
 
-    private MockMvc restAddressMockMvc;
+    @BeforeClass
+    public static void beforeClass() throws IOException {
+        redisServer = new RedisServer(6379);
+        redisServer.start();
+    }
 
-    private Address address;
+    @AfterClass
+    public static void afterClass() throws IOException {
+        redisServer.stop();
+    }
 
     /**
      * Create an entity for this test.
@@ -366,14 +369,5 @@ public class AddressResourceIntTest {
         // Validate the database is empty
         List<Address> addresses = addressRepository.findAll();
         assertThat(addresses).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Configuration
-    @EnableCaching
-    static class Config {
-        @Bean
-        public CacheManager cacheManager() {
-            return new NoOpCacheManager();
-        }
     }
 }
