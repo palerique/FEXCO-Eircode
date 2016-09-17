@@ -30,4 +30,4 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
     on_start: false     # default: false
     after_success:
-      - bash <(curl -s https://codecov.io/bash)
+      - codecov
