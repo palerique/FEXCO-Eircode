@@ -9,9 +9,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.support.NoOpCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FexcoPostcodeApp.class)
+@ContextConfiguration(classes = {FexcoPostcodeApp.class, AddressResourceIntTest.Config.class})
 public class AddressResourceIntTest {
 
     private static final String DEFAULT_ADDRESSLINE_1           = "AAAAA";
@@ -103,22 +110,6 @@ public class AddressResourceIntTest {
 
     private Address address;
 
-    @PostConstruct
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        AddressResource addressResource = new AddressResource();
-        ReflectionTestUtils.setField(addressResource, "addressService", addressService);
-        this.restAddressMockMvc = MockMvcBuilders.standaloneSetup(addressResource)
-                                                 .setCustomArgumentResolvers(pageableArgumentResolver)
-                                                 .setMessageConverters(jacksonMessageConverter).build();
-    }
-
-    @Before
-    public void initTest() {
-        addressRepository.deleteAll();
-        address = createEntity();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -154,6 +145,22 @@ public class AddressResourceIntTest {
         return address;
     }
 
+    @PostConstruct
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        AddressResource addressResource = new AddressResource();
+        ReflectionTestUtils.setField(addressResource, "addressService", addressService);
+        this.restAddressMockMvc = MockMvcBuilders.standaloneSetup(addressResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
+    public void initTest() {
+        addressRepository.deleteAll();
+        address = createEntity();
+    }
+
     @Test
     public void createAddress() throws Exception {
         int databaseSizeBeforeCreate = addressRepository.findAll().size();
@@ -161,9 +168,9 @@ public class AddressResourceIntTest {
         // Create the Address
 
         restAddressMockMvc.perform(post("/api/addresses")
-                                       .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                                       .content(TestUtil.convertObjectToJsonBytes(address)))
-                          .andExpect(status().isCreated());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(address)))
+            .andExpect(status().isCreated());
 
         // Validate the Address in the database
         List<Address> addresses = addressRepository.findAll();
@@ -202,33 +209,33 @@ public class AddressResourceIntTest {
 
         // Get all the addresses
         restAddressMockMvc.perform(get("/api/addresses?sort=id,desc"))
-                          .andExpect(status().isOk())
-                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                          .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId())))
-                          .andExpect(jsonPath("$.[*].addressline1").value(hasItem(DEFAULT_ADDRESSLINE_1.toString())))
-                          .andExpect(jsonPath("$.[*].addressline2").value(hasItem(DEFAULT_ADDRESSLINE_2.toString())))
-                          .andExpect(jsonPath("$.[*].addressline3").value(hasItem(DEFAULT_ADDRESSLINE_3.toString())))
-                          .andExpect(jsonPath("$.[*].summaryline").value(hasItem(DEFAULT_SUMMARYLINE.toString())))
-                          .andExpect(jsonPath("$.[*].organisation").value(hasItem(DEFAULT_ORGANISATION.toString())))
-                          .andExpect(jsonPath("$.[*].buildingname").value(hasItem(DEFAULT_BUILDINGNAME.toString())))
-                          .andExpect(jsonPath("$.[*].premise").value(hasItem(DEFAULT_PREMISE.toString())))
-                          .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
-                          .andExpect(jsonPath("$.[*].dependentlocality").value(hasItem(DEFAULT_DEPENDENTLOCALITY.toString())))
-                          .andExpect(jsonPath("$.[*].posttown").value(hasItem(DEFAULT_POSTTOWN.toString())))
-                          .andExpect(jsonPath("$.[*].county").value(hasItem(DEFAULT_COUNTY.toString())))
-                          .andExpect(jsonPath("$.[*].postcode").value(hasItem(DEFAULT_POSTCODE.toString())))
-                          .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER.toString())))
-                          .andExpect(jsonPath("$.[*].pobox").value(hasItem(DEFAULT_POBOX.toString())))
-                          .andExpect(jsonPath("$.[*].departmentname").value(hasItem(DEFAULT_DEPARTMENTNAME.toString())))
-                          .andExpect(jsonPath("$.[*].subbuildingname").value(hasItem(DEFAULT_SUBBUILDINGNAME.toString())))
-                          .andExpect(jsonPath("$.[*].dependentstreet").value(hasItem(DEFAULT_DEPENDENTSTREET.toString())))
-                          .andExpect(jsonPath("$.[*].doubledependentlocality").value(hasItem(DEFAULT_DOUBLEDEPENDENTLOCALITY.toString())))
-                          .andExpect(jsonPath("$.[*].recodes").value(hasItem(DEFAULT_RECODES.toString())))
-                          .andExpect(jsonPath("$.[*].morevalues").value(hasItem(DEFAULT_MOREVALUES.booleanValue())))
-                          .andExpect(jsonPath("$.[*].nextpage").value(hasItem(DEFAULT_NEXTPAGE)))
-                          .andExpect(jsonPath("$.[*].totalresults").value(hasItem(DEFAULT_TOTALRESULTS)))
-                          .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.toString())))
-                          .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.toString())));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId())))
+            .andExpect(jsonPath("$.[*].addressline1").value(hasItem(DEFAULT_ADDRESSLINE_1.toString())))
+            .andExpect(jsonPath("$.[*].addressline2").value(hasItem(DEFAULT_ADDRESSLINE_2.toString())))
+            .andExpect(jsonPath("$.[*].addressline3").value(hasItem(DEFAULT_ADDRESSLINE_3.toString())))
+            .andExpect(jsonPath("$.[*].summaryline").value(hasItem(DEFAULT_SUMMARYLINE.toString())))
+            .andExpect(jsonPath("$.[*].organisation").value(hasItem(DEFAULT_ORGANISATION.toString())))
+            .andExpect(jsonPath("$.[*].buildingname").value(hasItem(DEFAULT_BUILDINGNAME.toString())))
+            .andExpect(jsonPath("$.[*].premise").value(hasItem(DEFAULT_PREMISE.toString())))
+            .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
+            .andExpect(jsonPath("$.[*].dependentlocality").value(hasItem(DEFAULT_DEPENDENTLOCALITY.toString())))
+            .andExpect(jsonPath("$.[*].posttown").value(hasItem(DEFAULT_POSTTOWN.toString())))
+            .andExpect(jsonPath("$.[*].county").value(hasItem(DEFAULT_COUNTY.toString())))
+            .andExpect(jsonPath("$.[*].postcode").value(hasItem(DEFAULT_POSTCODE.toString())))
+            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].pobox").value(hasItem(DEFAULT_POBOX.toString())))
+            .andExpect(jsonPath("$.[*].departmentname").value(hasItem(DEFAULT_DEPARTMENTNAME.toString())))
+            .andExpect(jsonPath("$.[*].subbuildingname").value(hasItem(DEFAULT_SUBBUILDINGNAME.toString())))
+            .andExpect(jsonPath("$.[*].dependentstreet").value(hasItem(DEFAULT_DEPENDENTSTREET.toString())))
+            .andExpect(jsonPath("$.[*].doubledependentlocality").value(hasItem(DEFAULT_DOUBLEDEPENDENTLOCALITY.toString())))
+            .andExpect(jsonPath("$.[*].recodes").value(hasItem(DEFAULT_RECODES.toString())))
+            .andExpect(jsonPath("$.[*].morevalues").value(hasItem(DEFAULT_MOREVALUES.booleanValue())))
+            .andExpect(jsonPath("$.[*].nextpage").value(hasItem(DEFAULT_NEXTPAGE)))
+            .andExpect(jsonPath("$.[*].totalresults").value(hasItem(DEFAULT_TOTALRESULTS)))
+            .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.toString())))
+            .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.toString())));
     }
 
     @Test
@@ -238,40 +245,40 @@ public class AddressResourceIntTest {
 
         // Get the address
         restAddressMockMvc.perform(get("/api/addresses/{id}", address.getId()))
-                          .andExpect(status().isOk())
-                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                          .andExpect(jsonPath("$.id").value(address.getId()))
-                          .andExpect(jsonPath("$.addressline1").value(DEFAULT_ADDRESSLINE_1.toString()))
-                          .andExpect(jsonPath("$.addressline2").value(DEFAULT_ADDRESSLINE_2.toString()))
-                          .andExpect(jsonPath("$.addressline3").value(DEFAULT_ADDRESSLINE_3.toString()))
-                          .andExpect(jsonPath("$.summaryline").value(DEFAULT_SUMMARYLINE.toString()))
-                          .andExpect(jsonPath("$.organisation").value(DEFAULT_ORGANISATION.toString()))
-                          .andExpect(jsonPath("$.buildingname").value(DEFAULT_BUILDINGNAME.toString()))
-                          .andExpect(jsonPath("$.premise").value(DEFAULT_PREMISE.toString()))
-                          .andExpect(jsonPath("$.street").value(DEFAULT_STREET.toString()))
-                          .andExpect(jsonPath("$.dependentlocality").value(DEFAULT_DEPENDENTLOCALITY.toString()))
-                          .andExpect(jsonPath("$.posttown").value(DEFAULT_POSTTOWN.toString()))
-                          .andExpect(jsonPath("$.county").value(DEFAULT_COUNTY.toString()))
-                          .andExpect(jsonPath("$.postcode").value(DEFAULT_POSTCODE.toString()))
-                          .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER.toString()))
-                          .andExpect(jsonPath("$.pobox").value(DEFAULT_POBOX.toString()))
-                          .andExpect(jsonPath("$.departmentname").value(DEFAULT_DEPARTMENTNAME.toString()))
-                          .andExpect(jsonPath("$.subbuildingname").value(DEFAULT_SUBBUILDINGNAME.toString()))
-                          .andExpect(jsonPath("$.dependentstreet").value(DEFAULT_DEPENDENTSTREET.toString()))
-                          .andExpect(jsonPath("$.doubledependentlocality").value(DEFAULT_DOUBLEDEPENDENTLOCALITY.toString()))
-                          .andExpect(jsonPath("$.recodes").value(DEFAULT_RECODES.toString()))
-                          .andExpect(jsonPath("$.morevalues").value(DEFAULT_MOREVALUES.booleanValue()))
-                          .andExpect(jsonPath("$.nextpage").value(DEFAULT_NEXTPAGE))
-                          .andExpect(jsonPath("$.totalresults").value(DEFAULT_TOTALRESULTS))
-                          .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE.toString()))
-                          .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE.toString()));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").value(address.getId()))
+            .andExpect(jsonPath("$.addressline1").value(DEFAULT_ADDRESSLINE_1.toString()))
+            .andExpect(jsonPath("$.addressline2").value(DEFAULT_ADDRESSLINE_2.toString()))
+            .andExpect(jsonPath("$.addressline3").value(DEFAULT_ADDRESSLINE_3.toString()))
+            .andExpect(jsonPath("$.summaryline").value(DEFAULT_SUMMARYLINE.toString()))
+            .andExpect(jsonPath("$.organisation").value(DEFAULT_ORGANISATION.toString()))
+            .andExpect(jsonPath("$.buildingname").value(DEFAULT_BUILDINGNAME.toString()))
+            .andExpect(jsonPath("$.premise").value(DEFAULT_PREMISE.toString()))
+            .andExpect(jsonPath("$.street").value(DEFAULT_STREET.toString()))
+            .andExpect(jsonPath("$.dependentlocality").value(DEFAULT_DEPENDENTLOCALITY.toString()))
+            .andExpect(jsonPath("$.posttown").value(DEFAULT_POSTTOWN.toString()))
+            .andExpect(jsonPath("$.county").value(DEFAULT_COUNTY.toString()))
+            .andExpect(jsonPath("$.postcode").value(DEFAULT_POSTCODE.toString()))
+            .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER.toString()))
+            .andExpect(jsonPath("$.pobox").value(DEFAULT_POBOX.toString()))
+            .andExpect(jsonPath("$.departmentname").value(DEFAULT_DEPARTMENTNAME.toString()))
+            .andExpect(jsonPath("$.subbuildingname").value(DEFAULT_SUBBUILDINGNAME.toString()))
+            .andExpect(jsonPath("$.dependentstreet").value(DEFAULT_DEPENDENTSTREET.toString()))
+            .andExpect(jsonPath("$.doubledependentlocality").value(DEFAULT_DOUBLEDEPENDENTLOCALITY.toString()))
+            .andExpect(jsonPath("$.recodes").value(DEFAULT_RECODES.toString()))
+            .andExpect(jsonPath("$.morevalues").value(DEFAULT_MOREVALUES.booleanValue()))
+            .andExpect(jsonPath("$.nextpage").value(DEFAULT_NEXTPAGE))
+            .andExpect(jsonPath("$.totalresults").value(DEFAULT_TOTALRESULTS))
+            .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE.toString()))
+            .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE.toString()));
     }
 
     @Test
     public void getNonExistingAddress() throws Exception {
         // Get the address
         restAddressMockMvc.perform(get("/api/addresses/{id}", Long.MAX_VALUE))
-                          .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -310,9 +317,9 @@ public class AddressResourceIntTest {
             .longitude(UPDATED_LONGITUDE);
 
         restAddressMockMvc.perform(put("/api/addresses")
-                                       .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                                       .content(TestUtil.convertObjectToJsonBytes(updatedAddress)))
-                          .andExpect(status().isOk());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedAddress)))
+            .andExpect(status().isOk());
 
         // Validate the Address in the database
         List<Address> addresses = addressRepository.findAll();
@@ -353,11 +360,20 @@ public class AddressResourceIntTest {
 
         // Get the address
         restAddressMockMvc.perform(delete("/api/addresses/{id}", address.getId())
-                                       .accept(TestUtil.APPLICATION_JSON_UTF8))
-                          .andExpect(status().isOk());
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Address> addresses = addressRepository.findAll();
         assertThat(addresses).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Configuration
+    @EnableCaching
+    static class Config {
+        @Bean
+        public CacheManager cacheManager() {
+            return new NoOpCacheManager();
+        }
     }
 }
