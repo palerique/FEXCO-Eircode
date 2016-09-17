@@ -15,3 +15,7 @@ services:
         extends:
             file: mongodb.yml
             service: fexco_postcode-mongodb
+    fexco_postcode-redis:
+        extends:
+            file: redis.yml
+            service: fexco_postcode-redis

@@ -5,6 +5,9 @@ import br.com.sitedoph.fexco.postcode.repository.AddressRepository;
 import br.com.sitedoph.fexco.postcode.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,8 +32,12 @@ public class AddressServiceImpl implements AddressService {
      * @param address the entity to save
      * @return the persisted entity
      */
+    @Caching(evict = {@CacheEvict(value = "address-pages", allEntries = true)})
     public Address save(Address address) {
         log.debug("Request to save Address : {}", address);
+
+        //TODO: add to the cache!
+
         Address result = addressRepository.save(address);
         return result;
     }
@@ -41,7 +48,9 @@ public class AddressServiceImpl implements AddressService {
      * @param pageable the pagination information
      * @return the list of entities
      */
+    @Cacheable("address-pages")
     public Page<Address> findAll(Pageable pageable) {
+        log.debug("Request to get all Addresses");
 
         //TODO: testing REST service consuming!
 //        RestTemplate restTemplate = new RestTemplate();
@@ -61,9 +70,7 @@ public class AddressServiceImpl implements AddressService {
 //
 //        this.saveAll(addresses);
 
-        log.debug("Request to get all Addresses");
-        Page<Address> result = addressRepository.findAll(pageable);
-        return result;
+        return addressRepository.findAll(pageable);
     }
 
     /**
@@ -83,12 +90,14 @@ public class AddressServiceImpl implements AddressService {
      *
      * @param id the id of the entity
      */
+    @Caching(evict = {@CacheEvict(value = "address-pages", allEntries = true)})
     public void delete(String id) {
         log.debug("Request to delete Address : {}", id);
         addressRepository.delete(id);
     }
 
     @Override
+    @Caching(evict = {@CacheEvict(value = "address-pages", allEntries = true)})
     public void saveAll(List<Address> addresses) {
         addressRepository.save(addresses);
     }
