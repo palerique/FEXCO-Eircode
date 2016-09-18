@@ -99,6 +99,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Caching(evict = {@CacheEvict(value = "address-pages", allEntries = true)})
     public void saveAll(List<Address> addresses) {
+        log.debug("Request to save all Addresses : {}", addresses);
         addressRepository.save(addresses);
+    }
+
+    @Override
+    public Page<Address> findByPostcodeContains(String postcode, Pageable pageable) {
+        log.debug("Request to load page : {} with Address that have the postcode : {}", pageable, postcode);
+        return addressRepository.findByPostcodeContains(postcode, pageable);
     }
 }

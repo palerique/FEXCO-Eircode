@@ -53,8 +53,8 @@ public class AddressResource {
         }
         Address result = addressService.save(address);
         return ResponseEntity.ok()
-                             .headers(HeaderUtil.createEntityUpdateAlert("address", address.getId().toString()))
-                             .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert("address", address.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -75,8 +75,8 @@ public class AddressResource {
         }
         Address result = addressService.save(address);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
-                             .headers(HeaderUtil.createEntityCreationAlert("address", result.getId().toString()))
-                             .body(result);
+            .headers(HeaderUtil.createEntityCreationAlert("address", result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -93,8 +93,28 @@ public class AddressResource {
     public ResponseEntity<List<Address>> getAllAddresses(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Addresses");
-        Page<Address> page = addressService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/addresses");
+        Page<Address> page    = addressService.findAll(pageable);
+        HttpHeaders   headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/addresses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /addresses : get all the addresses that have some postcode.
+     *
+     * @param postcode the postcode information
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of addresses that have the postcode in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/addresses/postcode/{postcode}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Address>> getAddressesByPostcode(@PathVariable String postcode, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Addresses that have the post code: " + postcode);
+        Page<Address> page    = addressService.findByPostcodeContains(postcode, pageable);
+        HttpHeaders   headers = PaginationUtil.generatePaginationHttpHeaders(page, "/addresses/postcode");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -112,10 +132,10 @@ public class AddressResource {
         log.debug("REST request to get Address : {}", id);
         Address address = addressService.findOne(id);
         return Optional.ofNullable(address)
-                       .map(result -> new ResponseEntity<>(
-                           result,
-                           HttpStatus.OK))
-                       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**

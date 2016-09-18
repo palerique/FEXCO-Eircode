@@ -42,5 +42,18 @@ public interface AddressService {
      */
     void delete(String id);
 
+    /**
+     * Save all addresses in a collection.
+     *
+     * @param addresses the collection of entity to save
+     */
     void saveAll(List<Address> addresses);
+
+    /**
+     * Get all the addresses.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<Address> findByPostcodeContains(String postcode, Pageable pageable);
 }

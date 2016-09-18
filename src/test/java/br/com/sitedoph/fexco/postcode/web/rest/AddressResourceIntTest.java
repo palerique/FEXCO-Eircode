@@ -17,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import redis.embedded.RedisServer;
 
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FexcoPostcodeApp.class)
 public class AddressResourceIntTest {
+
 
     private static final String DEFAULT_ADDRESSLINE_1           = "AAAAA";
     private static final String UPDATED_ADDRESSLINE_1           = "BBBBB";
@@ -211,7 +213,21 @@ public class AddressResourceIntTest {
         addressRepository.save(address);
 
         // Get all the addresses
-        restAddressMockMvc.perform(get("/api/addresses?sort=id,desc"))
+        ResultActions resultActions = restAddressMockMvc.perform(get("/api/addresses?sort=id,desc"));
+
+        assertresultAction(resultActions);
+    }
+
+    @Test
+    public void getAddressesByPostcode() throws Exception {
+        addressRepository.save(address);
+        ResultActions resultActions = restAddressMockMvc.perform(get("/api/addresses/postcode/A?sort=id,desc"));
+
+        assertresultAction(resultActions);
+    }
+
+    private void assertresultAction(ResultActions resultActions) throws Exception {
+        resultActions
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId())))
