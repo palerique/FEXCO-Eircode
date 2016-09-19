@@ -4,45 +4,9 @@ MASTER [![Build Status - MASTER](https://travis-ci.org/palerique/FEXCO-Eircode.s
 DEV [![Build Status - DEV](https://travis-ci.org/palerique/FEXCO-Eircode.svg?branch=dev)](https://travis-ci.org/palerique/FEXCO-Eircode)
 [![codecov](https://codecov.io/gh/palerique/FEXCO-Eircode/branch/dev/graph/badge.svg)](https://codecov.io/gh/palerique/FEXCO-Eircode)
 
-
-
-# FEXCO Software Group
-
-## FEXCO-Eircode
-
-### Task Proposal
-
-Develop a docker API service to query for addresses based on their Eircode (Irish post code) using a third party API.
-
-We want to install your API service, query it with some Irish Eircodes and receive JSON response with the address details.
-There is a third party API available (free for limited use) with the information you need.
-
-These are the two endpoints that require implementation.
-- https://developers.alliescomputing.com/postcoder-web-api/address-lookup/eircode
-- https://developers.alliescomputing.com/postcoder-web-api/address-lookup/premise
-
-### Why?
-
-Each call to the third party API has a cost of 4.5 credits per request. We expect this API being called by multiple services that all together add up to one million requests per month.
-In order to minimize the costs we need to minimize the number of requests to the third party API, without interfering with how the consumer services work.
-
-### What?
-
-The implemented solution must contemplate the following requirements:
-- Expose an API that is compatible with and uses the third-party API. (same API options)
-- Avoid repeated requests to hit the third party API. A proposed solution is to use an in-memory cache.
-- Make sure the previous requests survive on service restarts (e.g. after a new version of your service is deployed). A proposed solution involves a long term persistent mechanism, that preloads the in-memory cache on startup.
-- During the development process we expect you to mock the responses from the third-party API (to avoid unnecessarily consuming credits from the 3rd party API)
-- A testing client that hits the built service (e.g HTML5/JS app or cURL script)
-
-### Ensure That:
-- The developed service is production grade, we expect unit tests and any other testing techniques as well as well designed classes and easily maintainable clean code.
-- Use appropriate open source frameworks/libraries where applicable.
-- Good usage of git and development workflow (use your public github account).
-
 Sept 2016, © FEXCO Software Group
 
-# FEXCO_postcode
+# FEXCO_postcode - [TASK PROPOSAL](TASK_PROPOSAL.md)
 
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
@@ -88,6 +52,21 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
+## Building and running a Docker image of your application - [MORE INFO](https://jhipster.github.io/docker-compose/)
+To create a Docker image of your application, and push it into your Docker registry:
+
+With Maven, type: 
+
+    ./mvnw package -Pprod docker:build
+
+This will package your application with the prod profile, and install the image.
+
+To run this image, use the Docker Compose configuration located in the src/main/docker folder of your application:
+
+    docker-compose -f src/main/docker/app.yml up
+
+This command will start up your application and the services it relies on (database, search engine, JHipster Registry…).
+
 ## Testing
 
 Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in `src/test/javascript/` and can be run with:
@@ -100,31 +79,13 @@ and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`
 Performance tests are run by [Gatling]() and written in Scala. They're located in `src/test/gatling` and can be run with:
 
     ./mvnw gatling:execute
-
     
 ## Continuous Integration
-
-To setup this project in Jenkins, use the following configuration:
-
-* Project name: `FEXCO_postcode`
-* Source Code Management
-    * Git Repository: `git@github.com:xxxx/FEXCO_postcode.git`
-    * Branches to build: `*/master`
-    * Additional Behaviours: `Wipe out repository & force clone`
-* Build Triggers
-    * Poll SCM / Schedule: `H/5 * * * *`
-* Build
-    * Invoke Maven / Tasks: `-Pprod clean package`
-    * Execute Shell / Command:
-        ````
-        ./mvnw spring-boot:run &
-        bootPid=$!
-        sleep 30s
-        gulp itest
-        kill $bootPid
-        ````
-* Post-build Actions
-    * Publish JUnit test result report / Test Report XMLs: `build/test-results/*.xml,build/reports/e2e/*.xml`
+## Test Coverage
+## Branching
+## Cache Tests
+## Profiling - XRebel
+## Sonar
 
 [JHipster]: https://jhipster.github.io/
 [Gatling]: http://gatling.io/
