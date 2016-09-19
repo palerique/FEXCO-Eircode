@@ -24,23 +24,10 @@ public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
 
-//    private CacheManager cacheManager;
-
     @PreDestroy
     public void destroy() {
         log.info("Closing Cache Manager");
     }
-
-//    @Bean
-//    public CacheManager cacheManager() {
-////        log.debug("No cache");
-////        cacheManager = new NoOpCacheManager();
-//
-//        log.debug("%%%% ->>> SimpleCacheManager");
-//        cacheManager = new SimpleCacheManager();
-//
-//        return cacheManager;
-//    }
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {

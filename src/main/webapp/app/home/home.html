@@ -1,4 +1,63 @@
 <div ng-cloak>
+
+    <div ng-show="vm.isAuthenticated()">
+
+        <form name="editForm" role="form" novalidate ng-submit="vm.search()">
+
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="sizing-addon1">
+                    <span class="glyphicon glyphicon-map-marker"></span> POSTCODE
+                </span>
+                        <input
+                            type="text"
+                            ng-model="vm.postcode"
+                            placeholder="Insert here the desired postcode"
+                            uib-typeahead="postcode for postcode in vm.getPostcodesSuggestions($viewValue)"
+                            class="form-control"
+                        >
+
+                        <!--typeahead-no-results="noResults"-->
+                        <!--typeahead-loading="loadingLocations"-->
+                        <!--<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>-->
+                        <!--<div ng-show="noResults">-->
+                        <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
+                        <!--</div>-->
+
+
+                        <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <span class="glyphicon glyphicon-search"></span> Search!
+                </button>
+            </span>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+
+                <ul
+                    class="list-group"
+                    infinite-scroll="vm.loadPage(vm.page + 1)"
+                    infinite-scroll-disabled="vm.page >= vm.links['last'] || (vm.addresses.length == 0)"
+                >
+
+                    <li class="list-group-item" ng-repeat="address in vm.addresses track by address.id">
+                        <a ui-sref="address-detail({id:address.id})">{{address.id}}</a><br/>
+                        {{address.summaryline}}<br/>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
     <div class="row">
         <div class="col-md-4">
             <span class="hipster img-responsive img-rounded"></span>
@@ -13,7 +72,8 @@
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false">
-                    If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and
+                    If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the
+                    default accounts:<br/>- Administrator (login="admin" and
                     password="admin") <br/>- User (login="user" and password="user").
                 </div>
 
@@ -28,14 +88,18 @@
 
             <ul>
                 <li><a href="http://jhipster.github.io/" target="_blank">JHipster homepage</a></li>
-                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank">JHipster on Stack Overflow</a></li>
-                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank">JHipster bug tracker</a></li>
-                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank">JHipster public chat room</a></li>
+                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank">JHipster on Stack Overflow</a>
+                </li>
+                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank">JHipster
+                    bug tracker</a></li>
+                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank">JHipster public chat
+                    room</a></li>
                 <li><a href="https://twitter.com/java_hipster" target="_blank">follow @java_hipster on Twitter</a></li>
             </ul>
 
             <p>
-                <span>If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
+                <span>If you like JHipster, don't forget to give us a star on </span>&nbsp;<a
+                href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
             </p>
         </div>
     </div>

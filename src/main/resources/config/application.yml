@@ -70,3 +70,11 @@ jhipster:
     ribbon:
         # comma seperated list of profiles to show a ribbon on the GUI
         displayOnActiveProfiles: dev
+
+# ===================================================================
+# Other properties
+# ===================================================================
+
+postcoder:
+    token: PCWYL-3T5LN-JC96L-V78FS
+#    token: PCW45-12345-12345-1234X

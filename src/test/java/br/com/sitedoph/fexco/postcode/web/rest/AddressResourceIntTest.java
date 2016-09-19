@@ -92,22 +92,29 @@ public class AddressResourceIntTest {
     private static final String  UPDATED_LATITUDE     = "BBBBB";
     private static final String  DEFAULT_LONGITUDE    = "AAAAA";
     private static final String  UPDATED_LONGITUDE    = "BBBBB";
+
     private static RedisServer                           redisServer;
+
     @Inject
     private        AddressRepository                     addressRepository;
     @Inject
     private        AddressService                        addressService;
     @Inject
     private        MappingJackson2HttpMessageConverter   jacksonMessageConverter;
+
     @Inject
     private        PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+
     private        MockMvc                               restAddressMockMvc;
     private        Address                               address;
 
     @BeforeClass
-    public static void beforeClass() throws IOException {
-        redisServer = new RedisServer(6379);
-        redisServer.start();
+    public static void beforeClass() {
+        try {
+            redisServer = new RedisServer(6379);
+            redisServer.start();
+        } catch (Exception e) {
+        }
     }
 
     @AfterClass
