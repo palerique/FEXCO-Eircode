@@ -21,6 +21,8 @@ spring:
         mongodb:
             uri: mongodb://localhost:27017
             database: FEXCO_postcode
+    redis:
+        host: localhost
     mail:
         host: localhost
         port: 25

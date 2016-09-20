@@ -15,6 +15,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
 @SuppressWarnings("unused")
 @Configuration
@@ -23,6 +24,9 @@ import javax.annotation.PreDestroy;
 public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
+
+    @Inject
+    private RedisProperties redisProperties;
 
     @PreDestroy
     public void destroy() {
@@ -34,6 +38,7 @@ public class CacheConfiguration {
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setUsePool(true);
+        jedisConnectionFactory.setHostName(redisProperties.getHost());
         return jedisConnectionFactory;
     }
 

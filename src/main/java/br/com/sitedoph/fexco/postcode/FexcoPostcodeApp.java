@@ -3,6 +3,7 @@ package br.com.sitedoph.fexco.postcode;
 import br.com.sitedoph.fexco.postcode.config.Constants;
 import br.com.sitedoph.fexco.postcode.config.DefaultProfileUtil;
 import br.com.sitedoph.fexco.postcode.config.JHipsterProperties;
+import br.com.sitedoph.fexco.postcode.config.RedisProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +23,7 @@ import java.util.Collection;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
-@EnableConfigurationProperties({JHipsterProperties.class})
+@EnableConfigurationProperties({JHipsterProperties.class, RedisProperties.class})
 public class FexcoPostcodeApp {
 
     private static final Logger log = LoggerFactory.getLogger(FexcoPostcodeApp.class);
@@ -41,13 +42,13 @@ public class FexcoPostcodeApp {
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
-                     "Application '{}' is running! Access URLs:\n\t" +
-                     "Local: \t\thttp://127.0.0.1:{}\n\t" +
-                     "External: \thttp://{}:{}\n----------------------------------------------------------",
-                 env.getProperty("spring.application.name"),
-                 env.getProperty("server.port"),
-                 InetAddress.getLocalHost().getHostAddress(),
-                 env.getProperty("server.port"));
+                "Application '{}' is running! Access URLs:\n\t" +
+                "Local: \t\thttp://127.0.0.1:{}\n\t" +
+                "External: \thttp://{}:{}\n----------------------------------------------------------",
+            env.getProperty("spring.application.name"),
+            env.getProperty("server.port"),
+            InetAddress.getLocalHost().getHostAddress(),
+            env.getProperty("server.port"));
 
     }
 
@@ -64,11 +65,11 @@ public class FexcoPostcodeApp {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
         if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_PRODUCTION)) {
             log.error("You have misconfigured your application! It should not run " +
-                          "with both the 'dev' and 'prod' profiles at the same time.");
+                "with both the 'dev' and 'prod' profiles at the same time.");
         }
         if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_CLOUD)) {
             log.error("You have misconfigured your application! It should not" +
-                          "run with both the 'dev' and 'cloud' profiles at the same time.");
+                "run with both the 'dev' and 'cloud' profiles at the same time.");
         }
     }
 }
