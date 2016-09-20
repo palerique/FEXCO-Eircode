@@ -2,9 +2,9 @@ import ch.qos.logback.classic.LoggerContext
 import org.slf4j.LoggerFactory
 
 /**
-  * Performance test for the Address entity.
+  * Performance test for the Address Postcode searchs.
   */
-class AddressGatlingTest extends Simulation {
+class AddressPostcodeGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class AddressGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the Address entity")
+    val scn = scenario("Test search Address by postcode")
         .exec(http("First unauthenticated request")
             .get("/api/account")
             .headers(headers_http)
@@ -54,34 +54,35 @@ class AddressGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .check(status.is(200)))
         .pause(10)
-        .repeat(2) {
-            exec(http("Get all addresses")
-                .get("/api/addresses")
-                .headers(headers_http_authenticated)
-                .check(status.is(200)))
-                .pause(10 seconds, 20 seconds)
-                .exec(http("Create new address")
-                    .post("/api/addresses")
-                    .headers(headers_http_authenticated)
-                    .body(StringBody("""{"id":null, "addressline1":"SAMPLE_TEXT", "addressline2":"SAMPLE_TEXT", "addressline3":"SAMPLE_TEXT", "summaryline":"SAMPLE_TEXT", "organisation":"SAMPLE_TEXT", "buildingname":"SAMPLE_TEXT", "premise":"SAMPLE_TEXT", "street":"SAMPLE_TEXT", "dependentlocality":"SAMPLE_TEXT", "posttown":"SAMPLE_TEXT", "county":"SAMPLE_TEXT", "postcode":"SAMPLE_TEXT", "number":"SAMPLE_TEXT", "pobox":"SAMPLE_TEXT", "departmentname":"SAMPLE_TEXT", "subbuildingname":"SAMPLE_TEXT", "dependentstreet":"SAMPLE_TEXT", "doubledependentlocality":"SAMPLE_TEXT", "recodes":"SAMPLE_TEXT", "morevalues":null, "nextpage":"0", "totalresults":"0", "latitude":"SAMPLE_TEXT", "longitude":"SAMPLE_TEXT"}""")).asJSON
-                    .check(status.is(201))
-                    .check(headerRegex("Location", "(.*)").saveAs("new_address_url"))).exitHereIfFailed
-                .pause(10)
-                .repeat(5) {
-                    exec(http("Get created address")
-                        .get("${new_address_url}")
-                        .headers(headers_http_authenticated))
-                        .pause(10)
-                }
-                .exec(http("Delete created address")
-                    .delete("${new_address_url}")
-                    .headers(headers_http_authenticated))
-                .pause(10)
-        }
+        .exec(http("Get addresses by postcode in IE - V93 WN9T")
+            .get("/api/addresses/postcode/V93%20WN9T")
+            .headers(headers_http_authenticated)
+            .check(status.is(200)))
+        .pause(1 seconds, 5 seconds)
+        .exec(http("Get addresses by postcode in UK - EC1A 1BB")
+            .get("/api/addresses/postcode/EC1A%201BB")
+            .headers(headers_http_authenticated)
+            .check(status.is(200)))
+        .pause(1 seconds, 5 seconds)
+        .exec(http("Get addresses by postcode in IE - D02 WY65")
+            .get("/api/addresses/postcode/D02%20WY65")
+            .headers(headers_http_authenticated)
+            .check(status.is(200)))
+        .pause(1 seconds, 5 seconds)
+        .exec(http("Get addresses by postcode in UK - W1A 0AX")
+            .get("/api/addresses/postcode/W1A%200AX")
+            .headers(headers_http_authenticated)
+            .check(status.is(200)))
+        .pause(1 seconds, 5 seconds)
+        .exec(http("Get addresses by postcode in IE - H91 VW7W")
+            .get("/api/addresses/postcode/H91%20VW7W")
+            .headers(headers_http_authenticated)
+            .check(status.is(200)))
+        .pause(1 seconds, 5 seconds)
 
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(400) over (1 minutes))
     ).protocols(httpConf)
 }

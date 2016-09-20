@@ -80,6 +80,15 @@ Performance tests are run by [Gatling]() and written in Scala. They're located i
 
     ./mvnw gatling:execute
     
+## Performance - Responses and Requests Throughput:
+
+Suppose that the desired throughput was 2 million responses per month, the application should respond approximately 
+67,000 requests per day, if we consider only 8 hours of that day we would have to answer 145 requests per minute.
+
+We did a test using Gatling to check if the application would be able to reach this throughput.
+
+The result was... TODO:
+
 ## Continuous Integration
 ## Test Coverage
 ## Branching
