@@ -32,6 +32,9 @@ Using the JWT approaches allow to use the stateless application architecture (Th
 
 All parts of the application are well tested! We used Gatling, Cucumber, protractor to check the correct operation of the application.
 
+The application can be accessed temporarily here: 
+[http://ec2-52-38-216-217.us-west-2.compute.amazonaws.com:8080/#/](http://ec2-52-38-216-217.us-west-2.compute.amazonaws.com:8080/#/)
+
 ## Continuous Integration
 
 We chose to do continuous integration of the project using Travis-CI: 
@@ -54,7 +57,8 @@ Suppose that the desired throughput was 2 million responses per month, the appli
 
 We did a test using Gatling to check if the application would be able to reach this throughput.
 
-The result was... TODO:
+In tests in development environment the application spend on average 20 milliseconds for each response 
+and was able to quietly maintain interaction with 100 concurrent clients.
 
 ## Branching
 
