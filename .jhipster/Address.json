@@ -1,0 +1,106 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "addressline1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "addressline2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "addressline3",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "summaryline",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "organisation",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "buildingname",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "premise",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "street",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dependentlocality",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "posttown",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "county",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "postcode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "number",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pobox",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "departmentname",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subbuildingname",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dependentstreet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "doubledependentlocality",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "recodes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "morevalues",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "nextpage",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "totalresults",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "latitude",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "longitude",
+            "fieldType": "String"
+        }
+    ],
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "address",
+    "pagination": "infinite-scroll"
+}

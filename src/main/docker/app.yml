@@ -1,0 +1,23 @@
+version: '2'
+services:
+    fexco_postcode-app:
+        image: fexco_postcode
+        external_links:
+            - fexco_postcode-mongodb:mongodb
+            - fexco_postcode-redis:redis
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017
+            - SPRING_DATA_MONGODB_DATABASE=FEXCO_postcode
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_REDIS_HOST=redis
+        ports:
+            - 8080:8080
+    fexco_postcode-mongodb:
+        extends:
+            file: mongodb.yml
+            service: fexco_postcode-mongodb
+    fexco_postcode-redis:
+        extends:
+            file: redis.yml
+            service: fexco_postcode-redis

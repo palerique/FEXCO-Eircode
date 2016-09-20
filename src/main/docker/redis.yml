@@ -1,0 +1,7 @@
+version: '2'
+services:
+    fexco_postcode-redis:
+        container_name: fexco_postcode-redis
+        image: redis:latest
+        ports:
+            - "6379:6379"
