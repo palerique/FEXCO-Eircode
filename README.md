@@ -8,6 +8,77 @@ Sept 2016, © FEXCO Software Group
 
 # FEXCO_postcode - [TASK PROPOSAL](TASK_PROPOSAL.md)
 
+Docker REST Web Service API that consumes third-party services to retrieve, persist, cache and serve to other clients.
+
+To avoid reaching the third-party API we chose to persist in an application database every address found.
+
+Moreover we utilize a cache in memory ([Redis][]) that prevents access to the database and allows the application 
+be even more performatic.
+
+We consume JSON objects and respond with JSON objects so we chose to persist the addresses found in a NoSQL database 
+([MongoDB][]) without normalizing the data. For this type of application it fits well and the impact on performance 
+is quite interesting.
+    
+For simplicity we have created the API client along with the API itself but the ideal scenario is to separate each 
+in microservices approach.
+
+Despite being a monolith the application can be scaled easily as it is all containerized using Docker. 
+And the client can be easily separated from the backend.
+
+The backend is safe, protected. 
+For some client access it is necessary for him to authenticate. 
+We chose to use the JSON Web Token (JWT) mechanism. 
+Using the JWT approaches allow to use the stateless application architecture (They do not rely on the HTTP Session).
+
+All parts of the application are well tested! We used Gatling, Cucumber, protractor to check the correct operation of the application.
+
+## Continuous Integration
+
+We chose to do continuous integration of the project using Travis-CI: 
+[https://travis-ci.org/palerique/FEXCO-Eircode](https://travis-ci.org/palerique/FEXCO-Eircode)
+
+## Test Coverage
+
+To the code test coverage we use Codecov.io. 
+Note that this tool takes into account the third-party JavaScript libraries to calculate code coverage, 
+so the value is low! 
+
+The goal was to keep all developed backend code near 100% covered.
+
+[https://codecov.io/gh/palerique/FEXCO-Eircode](https://codecov.io/gh/palerique/FEXCO-Eircode)
+
+## Performance - Responses and Requests Throughput:
+
+Suppose that the desired throughput was 2 million responses per month, the application should respond approximately 
+67,000 requests per day, if we consider only 8 hours of that day we would have to answer 145 requests per minute.
+
+We did a test using Gatling to check if the application would be able to reach this throughput.
+
+The result was... TODO:
+
+## Branching
+
+Regarding branching strategy there are two very interesting approaches that fit in certain cases. 
+For the development of this web service we chose to have only one main branch and branch development, 
+a strategy that is advocated by [Martin Fowler](http://martinfowler.com/bliki/FeatureBranch.html).
+
+In a project with multiple teams and multiple development fronts we could use a more complex model as proposed 
+by [Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/).
+
+You could access the code repository here [https://github.com/palerique/FEXCO-Eircode](https://github.com/palerique/FEXCO-Eircode).
+
+## About Eircode Third-party API:
+
+We noted that it is necessary a special subscription to access the code database postal Irish.
+
+We contacted the data supplier and they released our access but the credits have been consumed.
+
+We Mockamos these interactions for much of the development and rather used the free TOKEN but there came a time we need to see the application fact interacting with the service.
+
+To facilitate the change of TOKENS we created a system configuration that allows you to switch to another without much effort.
+
+## JHipster:
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 ## Development
@@ -79,22 +150,6 @@ and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`
 Performance tests are run by [Gatling]() and written in Scala. They're located in `src/test/gatling` and can be run with:
 
     ./mvnw gatling:execute
-    
-## Performance - Responses and Requests Throughput:
-
-Suppose that the desired throughput was 2 million responses per month, the application should respond approximately 
-67,000 requests per day, if we consider only 8 hours of that day we would have to answer 145 requests per minute.
-
-We did a test using Gatling to check if the application would be able to reach this throughput.
-
-The result was... TODO:
-
-## Continuous Integration
-## Test Coverage
-## Branching
-## Cache Tests
-## Profiling - XRebel
-## Sonar
 
 [JHipster]: https://jhipster.github.io/
 [Gatling]: http://gatling.io/
@@ -105,3 +160,5 @@ The result was... TODO:
 [Karma]: http://karma-runner.github.io/
 [Jasmine]: http://jasmine.github.io/2.0/introduction.html
 [Protractor]: https://angular.github.io/protractor/
+[Redis]: http://redis.io/
+[MongoDB]: https://www.mongodb.com/
