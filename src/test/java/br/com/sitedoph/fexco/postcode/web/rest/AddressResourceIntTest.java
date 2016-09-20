@@ -4,9 +4,7 @@ import br.com.sitedoph.fexco.postcode.FexcoPostcodeApp;
 import br.com.sitedoph.fexco.postcode.domain.Address;
 import br.com.sitedoph.fexco.postcode.repository.AddressRepository;
 import br.com.sitedoph.fexco.postcode.service.AddressService;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -19,11 +17,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,8 +89,6 @@ public class AddressResourceIntTest {
     private static final String  DEFAULT_LONGITUDE    = "AAAAA";
     private static final String  UPDATED_LONGITUDE    = "BBBBB";
 
-    private static RedisServer                           redisServer;
-
     @Inject
     private        AddressRepository                     addressRepository;
     @Inject
@@ -107,20 +101,6 @@ public class AddressResourceIntTest {
 
     private        MockMvc                               restAddressMockMvc;
     private        Address                               address;
-
-    @BeforeClass
-    public static void beforeClass() {
-        try {
-            redisServer = new RedisServer(6379);
-            redisServer.start();
-        } catch (Exception e) {
-        }
-    }
-
-    @AfterClass
-    public static void afterClass() throws IOException {
-        redisServer.stop();
-    }
 
     /**
      * Create an entity for this test.

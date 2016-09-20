@@ -6,6 +6,9 @@ import br.com.sitedoph.fexco.postcode.service.AddressService;
 import br.com.sitedoph.fexco.postcode.service.PostCoderThirdAPIWebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,11 +42,11 @@ public class AddressServiceImpl implements AddressService {
      * @param address the entity to save
      * @return the persisted entity
      */
-//    @Caching(evict = {
-//        @CacheEvict(value = ADDRESS_PAGES, allEntries = true),
-//        @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true),
-//        @CacheEvict(value = "postcodes", allEntries = true)
-//    })
+    @Caching(evict = {
+        @CacheEvict(value = ADDRESS_PAGES, allEntries = true),
+        @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true),
+        @CacheEvict(value = "postcodes", allEntries = true)
+    })
     public Address save(Address address) {
         log.debug("Request to save Address : {}", address);
 
@@ -59,7 +62,7 @@ public class AddressServiceImpl implements AddressService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-//    @Cacheable(ADDRESS_PAGES)
+    @Cacheable(ADDRESS_PAGES)
     public Page<Address> findAll(Pageable pageable) {
         log.debug("Request to get all Addresses");
         return addressRepository.findAll(pageable);
@@ -82,18 +85,22 @@ public class AddressServiceImpl implements AddressService {
      *
      * @param id the id of the entity
      */
-//    @Caching(evict = {@CacheEvict(value = ADDRESS_PAGES, allEntries = true), @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true)})
+    @Caching(evict = {
+        @CacheEvict(value = ADDRESS_PAGES, allEntries = true),
+        @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true),
+        @CacheEvict(value = "postcodes", allEntries = true)
+    })
     public void delete(String id) {
         log.debug("Request to delete Address : {}", id);
         addressRepository.delete(id);
     }
 
     @Override
-//    @Caching(evict = {
-//        @CacheEvict(value = ADDRESS_PAGES, allEntries = true),
-//        @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true),
-//        @CacheEvict(value = "postcodes", allEntries = true)
-//    })
+    @Caching(evict = {
+        @CacheEvict(value = ADDRESS_PAGES, allEntries = true),
+        @CacheEvict(value = ADDRESS_POSTCODE_PAGES, allEntries = true),
+        @CacheEvict(value = "postcodes", allEntries = true)
+    })
     public void saveAll(List<Address> addresses) {
         log.debug("Request to save all Addresses : {}", addresses);
         List<Address> toSave = new ArrayList<>();
@@ -107,20 +114,24 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-//    @Cacheable(ADDRESS_POSTCODE_PAGES)
+    @Cacheable(ADDRESS_POSTCODE_PAGES)
     public Page<Address> findByPostcodeContains(String postcode, Pageable pageable) {
         log.debug("Request to load page | {} | with Address that have the postcode | {} |", pageable, postcode);
 
         final Page<Address> inDatabase = addressRepository.findByPostcodeContains(postcode, pageable);
         if (inDatabase.getTotalElements() > 0) {
+            log.debug("returning addresses found in database | {} ", inDatabase);
             return inDatabase;
         }
 
-        List<Address> addresses = postCoderThirdAPIWebService.findByPostcode(postcode);
-        if (!addresses.isEmpty()) {
-            this.saveAll(addresses);
+        log.debug("no address in database matching this postcode | {} | searching in third-party API", postcode);
+        List<Address> addressesInThirdPartAPI = postCoderThirdAPIWebService.findByPostcode(postcode);
+        if (!addressesInThirdPartAPI.isEmpty()) {
+            log.debug("addresses found in third-party API | {} ", addressesInThirdPartAPI);
+            this.saveAll(addressesInThirdPartAPI);
             return findByPostcodeContains(postcode, pageable);
         } else {
+            log.debug("no address found in the database neither in the third-party API returning empty page for postcode: {}", postcode);
             return new PageImpl<>(new ArrayList<>(), pageable, 0);
         }
     }

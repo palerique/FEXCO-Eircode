@@ -4,9 +4,7 @@ import br.com.sitedoph.fexco.postcode.FexcoPostcodeApp;
 import br.com.sitedoph.fexco.postcode.domain.Address;
 import br.com.sitedoph.fexco.postcode.repository.AddressRepository;
 import br.com.sitedoph.fexco.postcode.service.PostcodeService;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -23,7 +21,6 @@ import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,20 +50,6 @@ public class PostcodeResourceTest {
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
     private MockMvc                               restAddressMockMvc;
     private Address                               address;
-
-    @BeforeClass
-    public static void beforeClass() {
-        try {
-            redisServer = new RedisServer(6379);
-            redisServer.start();
-        } catch (Exception e) {
-        }
-    }
-
-    @AfterClass
-    public static void afterClass() throws IOException {
-        redisServer.stop();
-    }
 
     /**
      * Create an entity for this test.
