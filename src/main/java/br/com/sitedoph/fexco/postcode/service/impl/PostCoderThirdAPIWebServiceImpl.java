@@ -9,13 +9,14 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,14 +39,14 @@ public class PostCoderThirdAPIWebServiceImpl implements PostCoderThirdAPIWebServ
 
     @Override
     public List<Address> findByPostcode(String postcode) {
-        List<Address> ukAddresses = Collections.emptyList();
+        List<Address> ukAddresses = new ArrayList<>();
         try {
             ukAddresses = getAddressList(postcode, UK);
         } catch (UnsupportedEncodingException | RestClientException e) {
             dealWithException(e);
         }
 
-        List<Address> ieAddresses = Collections.emptyList();
+        List<Address> ieAddresses = new ArrayList<>();
         try {
             ieAddresses = getAddressList(postcode, IE);
         } catch (UnsupportedEncodingException e) {
@@ -64,6 +65,58 @@ public class PostCoderThirdAPIWebServiceImpl implements PostCoderThirdAPIWebServ
     private List<Address> getAddressList(String postcode, String country) throws UnsupportedEncodingException {
 
         //TODO: get when result has multi pages!!! example: CV4 7AL
+
+        int page = 0;
+
+        ResponseEntity<List<Address>> listResponseEntity = getListResponseEntity(getURL(postcode, country, page));
+
+        if (checkCallFailure(listResponseEntity)) {
+            return new ArrayList<>();
+        } else {
+            List<Address> result = new ArrayList<>(listResponseEntity.getBody());
+            while (hasANextPage(listResponseEntity)) {
+                ++page;
+                listResponseEntity = getListResponseEntity(getURL(postcode, country, page));
+                if (!checkCallFailure(listResponseEntity)) {
+                    result.addAll(listResponseEntity.getBody());
+                }
+            }
+            return result;
+        }
+    }
+
+    private boolean hasANextPage(ResponseEntity<List<Address>> responseEntity) {
+        return responseEntity != null && responseEntity.getBody().size() == 100 && responseEntity.getBody().get(99).getNextpage() != null;
+    }
+
+    private boolean checkCallFailure(ResponseEntity<List<Address>> rateResponse) {
+        // check for call failure
+        if (rateResponse == null) {
+            return true;
+        }
+        if (rateResponse.getStatusCodeValue() != HttpURLConnection.HTTP_OK) {
+            log.error("Failed : HTTP error code : " + rateResponse.getStatusCodeValue());
+            return true;
+        }
+        return false;
+    }
+
+    private ResponseEntity<List<Address>> getListResponseEntity(String uri) {
+        try {
+            final ResponseEntity<List<Address>> exchange = restTemplate.exchange(uri,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Address>>() {
+                });
+            return exchange;
+        } catch (HttpClientErrorException e) {
+            //"Browser Direct Lookups exceeded, retry later"
+            log.error(e.getResponseBodyAsString(), e);
+            return null;
+        }
+    }
+
+    private String getURL(String postcode, String country, int page) throws UnsupportedEncodingException {
+        final String postcodeEncoded = postcode;
+
         //page	For use with searches that return more than 100 results; first page is 0 - see below
 //        Paging
 //
@@ -75,41 +128,15 @@ public class PostCoderThirdAPIWebServiceImpl implements PostCoderThirdAPIWebServ
 //
 //            Page 0 is the first page of results, page 1 is the second and so on.
 
-        ResponseEntity<List<Address>> listResponseEntityUK = getListResponseEntity(getURL(postcode, country));
-        if (checkCallFailure(listResponseEntityUK)) {
-            return Collections.emptyList();
-        } else {
-            return listResponseEntityUK.getBody();
-        }
-    }
-
-    private boolean checkCallFailure(ResponseEntity<List<Address>> rateResponse) {
-        // check for call failure
-        if (rateResponse.getStatusCodeValue() != HttpURLConnection.HTTP_OK) { // = HTTP 200 code (OK)
-            log.error("Failed : HTTP error code : " + rateResponse.getStatusCodeValue());
-            return true;
-        }
-        return false;
-    }
-
-    private ResponseEntity<List<Address>> getListResponseEntity(String uri) {
-        return restTemplate.exchange(uri,
-            HttpMethod.GET, null, new ParameterizedTypeReference<List<Address>>() {
-            });
-    }
-
-    private String getURL(String postcode, String country) throws UnsupportedEncodingException {
-//        final String postcodeEncoded = URLEncoder.encode(postcode, "UTF-8").replace("+", "%20");
-//        final String postcodeEncoded = postcode.replace(" ", "");
-        final String postcodeEncoded = postcode;
-        final String url = String.format("http://ws.postcoder.com/pcw/%s/%s/%s/%s?%s&%s&%s",
+        final String url = String.format("http://ws.postcoder.com/pcw/%s/%s/%s/%s?%s&%s&%s&page=%s",
             apiToken,
             METHOD,
             country,
             postcodeEncoded,
             FORMAT_JSON,
             THREE_LINES,
-            ONLY_POSTCODES);
+            ONLY_POSTCODES,
+            page);
 
         log.debug("generated URL : " + url);
 
