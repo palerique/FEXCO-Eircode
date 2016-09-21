@@ -64,6 +64,16 @@ public class PostCoderThirdAPIWebServiceImpl implements PostCoderThirdAPIWebServ
     private List<Address> getAddressList(String postcode, String country) throws UnsupportedEncodingException {
 
         //TODO: get when result has multi pages!!! example: CV4 7AL
+        //page	For use with searches that return more than 100 results; first page is 0 - see below
+//        Paging
+//
+//        Up to 100 results can be returned at a time in response to a request.
+//
+//        If there are more results beyond the current page, the last result will include a morevalues field with a value of true.
+//
+//            We also include a nextpage field with the number of the next page, so you can easily append ?page=[nextpage] to your request.
+//
+//            Page 0 is the first page of results, page 1 is the second and so on.
 
         ResponseEntity<List<Address>> listResponseEntityUK = getListResponseEntity(getURL(postcode, country));
         if (checkCallFailure(listResponseEntityUK)) {

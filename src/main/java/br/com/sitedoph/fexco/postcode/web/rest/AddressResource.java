@@ -113,7 +113,7 @@ public class AddressResource {
     public ResponseEntity<List<Address>> getAddressesByPostcode(@PathVariable String postcode, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Addresses that have the post code: " + postcode);
-        Page<Address> page    = addressService.findByPostcodeContains(postcode, pageable);
+        Page<Address> page    = addressService.findByPostcode(postcode, pageable);
         HttpHeaders   headers = PaginationUtil.generatePaginationHttpHeaders(page, "/addresses/postcode");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

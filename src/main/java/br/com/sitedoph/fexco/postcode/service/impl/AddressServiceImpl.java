@@ -27,6 +27,8 @@ public class AddressServiceImpl implements AddressService {
 
     public static final String ADDRESS_PAGES          = "address-pages";
     public static final String ADDRESS_POSTCODE_PAGES = "address-postcode-pages";
+    public static final String NR14_7_PZ              = "NR14 7PZ";
+    public static final String D02_X285               = "D02 X285";
 
     private final Logger log = LoggerFactory.getLogger(AddressServiceImpl.class);
 
@@ -106,6 +108,7 @@ public class AddressServiceImpl implements AddressService {
         List<Address> toSave = new ArrayList<>();
         for (Address address : addresses) {
             Example<Address> example = Example.of(address);
+            addressRepository.findAll(example);
             if (!addressRepository.exists(example)) {
                 toSave.add(address);
             }
@@ -115,24 +118,41 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Cacheable(ADDRESS_POSTCODE_PAGES)
-    public Page<Address> findByPostcodeContains(String postcode, Pageable pageable) {
+    public Page<Address> findByPostcode(String postcode, Pageable pageable) {
         log.debug("Request to load page | {} | with Address that have the postcode | {} |", pageable, postcode);
 
-        final Page<Address> inDatabase = addressRepository.findByPostcodeContains(postcode, pageable);
+        final Page<Address> inDatabase = addressRepository.findByPostcode(postcode, pageable);
         if (inDatabase.getTotalElements() > 0) {
             log.debug("returning addresses found in database | {} ", inDatabase);
             return inDatabase;
         }
 
         log.debug("no address in database matching this postcode | {} | searching in third-party API", postcode);
-        List<Address> addressesInThirdPartAPI = postCoderThirdAPIWebService.findByPostcode(postcode);
-        if (!addressesInThirdPartAPI.isEmpty()) {
-            log.debug("addresses found in third-party API | {} ", addressesInThirdPartAPI);
-            this.saveAll(addressesInThirdPartAPI);
-            return findByPostcodeContains(postcode, pageable);
+        List<Address> addressesInThirdPartyAPI = postCoderThirdAPIWebService.findByPostcode(postcode);
+        if (!addressesInThirdPartyAPI.isEmpty()) {
+            log.debug("addresses found in third-party API | {} ", addressesInThirdPartyAPI);
+
+            final Address firstEncounteredAddress = addressesInThirdPartyAPI.get(0);
+            final String  returnedPostcode        = firstEncounteredAddress.getPostcode();
+            if (isTheDefaultUKResponse(postcode, firstEncounteredAddress, returnedPostcode)
+                || isTheDefaultIEResponse(postcode, firstEncounteredAddress, returnedPostcode)) {
+                log.debug("Third-party API returning the default response. Desired postcode | {} | returned postcode | {} | ", postcode, returnedPostcode);
+                return new PageImpl<>(new ArrayList<>(), pageable, 0);
+            }
+
+            this.saveAll(addressesInThirdPartyAPI);
+            return findByPostcode(postcode, pageable);
         } else {
-            log.debug("no address found in the database neither in the third-party API returning empty page for postcode: {}", postcode);
+            log.debug("no address found neither in the database nor in the third-party API returning empty page for postcode: {}", postcode);
             return new PageImpl<>(new ArrayList<>(), pageable, 0);
         }
+    }
+
+    private boolean isTheDefaultUKResponse(String postcode, Address firstEncounteredAddress, String returnedPostcode) {
+        return NR14_7_PZ.equals(returnedPostcode) && !postcode.equals(NR14_7_PZ) && addressRepository.exists(Example.of(firstEncounteredAddress));
+    }
+
+    private boolean isTheDefaultIEResponse(String postcode, Address firstEncounteredAddress, String returnedPostcode) {
+        return D02_X285.equals(returnedPostcode) && !postcode.equals(D02_X285) && addressRepository.exists(Example.of(firstEncounteredAddress));
     }
 }

@@ -55,5 +55,5 @@ public interface AddressService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Address> findByPostcodeContains(String postcode, Pageable pageable);
+    Page<Address> findByPostcode(String postcode, Pageable pageable);
 }
