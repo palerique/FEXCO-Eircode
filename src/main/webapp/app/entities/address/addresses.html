@@ -19,28 +19,40 @@
             <thead>
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                 <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="addressline1"><span>Addressline 1</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="addressline2"><span>Addressline 2</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="addressline3"><span>Addressline 3</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="summaryline"><span>Summaryline</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="organisation"><span>Organisation</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="buildingname"><span>Buildingname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="addressline1"><span>Addressline 1</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
+                <th jh-sort-by="addressline2"><span>Addressline 2</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
+                <th jh-sort-by="addressline3"><span>Addressline 3</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
+                <th jh-sort-by="summaryline"><span>Summaryline</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
+                <th jh-sort-by="organisation"><span>Organisation</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
+                <th jh-sort-by="buildingname"><span>Buildingname</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
                 <th jh-sort-by="premise"><span>Premise</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="street"><span>Street</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="dependentlocality"><span>Dependentlocality</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="dependentlocality"><span>Dependentlocality</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="posttown"><span>Posttown</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="county"><span>County</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="postcode"><span>Postcode</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="number"><span>Number</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="pobox"><span>Pobox</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="departmentname"><span>Departmentname</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="subbuildingname"><span>Subbuildingname</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="dependentstreet"><span>Dependentstreet</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="doubledependentlocality"><span>Doubledependentlocality</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="departmentname"><span>Departmentname</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="subbuildingname"><span>Subbuildingname</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="dependentstreet"><span>Dependentstreet</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="doubledependentlocality"><span>Doubledependentlocality</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="recodes"><span>Recodes</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="morevalues"><span>Morevalues</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="nextpage"><span>Nextpage</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="totalresults"><span>Totalresults</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="totalresults"><span>Totalresults</span> <span class="glyphicon glyphicon-sort"></span>
+                </th>
                 <th jh-sort-by="latitude"><span>Latitude</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="longitude"><span>Longitude</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
@@ -81,18 +93,18 @@
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <span class="hidden-xs hidden-sm"></span>
                         </button>
-                        <button type="submit"
-                                ui-sref="address.edit({id:address.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <span class="hidden-xs hidden-sm"></span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="address.delete({id:address.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>
-                            <span class="hidden-xs hidden-sm"></span>
-                        </button>
+                        <!--<button type="submit"-->
+                        <!--ui-sref="address.edit({id:address.id})"-->
+                        <!--class="btn btn-primary btn-sm">-->
+                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
+                        <!--<span class="hidden-xs hidden-sm"></span>-->
+                        <!--</button>-->
+                        <!--<button type="submit"-->
+                        <!--ui-sref="address.delete({id:address.id})"-->
+                        <!--class="btn btn-danger btn-sm">-->
+                        <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
+                        <!--<span class="hidden-xs hidden-sm"></span>-->
+                        <!--</button>-->
                     </div>
                 </td>
             </tr>
