@@ -78,5 +78,5 @@ jhipster:
 # Other properties
 # ===================================================================
 
-postcoder:
-    token: PCW45-12345-12345-1234X
+#postcoder:
+#    token: PCW45-12345-12345-1234X
