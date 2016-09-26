@@ -6,29 +6,31 @@ DEV [![Build Status - DEV](https://travis-ci.org/palerique/FEXCO-Eircode.svg?bra
 
 Sept 2016, © FEXCO Software Group
 
-# FEXCO_postcode - [TASK PROPOSAL](TASK_PROPOSAL.md)
+# FEXCO_postcode
 
-Docker REST Web Service API that consumes third-party services to retrieve, persist, cache and serve to other clients.
+This repository contains an app that search postcodes in Ireland and the UK. 
+This application uses third-party services, keep in database codes and addresses already searched, 
+a cache to optimize searches and uses Docker to package the system and its database and cache dependencies.
+This system was developed to meet the specifications that can be found here [TASK PROPOSAL](TASK_PROPOSAL.md)
 
 To avoid reaching the third-party API we chose to persist in an application database every address found.
 
-Moreover we utilize a cache in memory ([Redis][]) that prevents access to the database and allows the application 
-be even more performatic.
+Moreover we utilize a in memory cache ([Redis][]) that prevents access to the database and provides the application 
+with increased performance.
 
-We consume JSON objects and respond with JSON objects so we chose to persist the addresses found in a NoSQL database 
-([MongoDB][]) without normalizing the data. For this type of application it fits well and the impact on performance 
-is quite interesting.
+We consume JSON objects and respond with JSON objects so we chose to persist the addresses found in a NoSQL 
+database that uses JSON documents ([MongoDB][]) without normalizing the data. 
+For this type of application it fits well and the impact on performance is quite interesting.
     
-For simplicity we have created the API client along with the API itself but the ideal scenario is to separate each 
-in microservices approach.
+For simplicity we have created the API client along with the API itself, 
+but the ideal scenario is to separate each one into microservices.
 
-Despite being a monolith the application can be scaled easily as it is all containerized using Docker. 
+Despite being a monolith the application can be scaled easily as it is all containerized using [Docker][]. 
 And the client can be easily separated from the backend.
 
-The backend is safe, protected. 
-For some client access it is necessary for him to authenticate. 
-We chose to use the JSON Web Token (JWT) mechanism. 
-Using the JWT approaches allow to use the stateless application architecture (They do not rely on the HTTP Session).
+The backend is secure and protected as client access requires authentication. 
+In order to do this we chose to use the JSON Web Token ([JWT][]) mechanism. 
+Using the [JWT][] approaches allow to use the stateless application architecture (They do not rely on the HTTP Session).
 
 All parts of the application are well tested! We used Gatling, Cucumber, protractor to check the correct operation of the application.
 
@@ -42,9 +44,9 @@ We chose to do continuous integration of the project using Travis-CI:
 
 ## Test Coverage
 
-To the code test coverage we use Codecov.io. 
+For the code test coverage we used Codecov.io. 
 Note that this tool takes into account the third-party JavaScript libraries to calculate code coverage, 
-so the value is low! 
+so the overall coverage value is low! 
 
 The goal was to keep all developed backend code near 100% covered.
 
@@ -57,8 +59,11 @@ Suppose that the desired throughput was 2 million responses per month, the appli
 
 We did a test using Gatling to check if the application would be able to reach this throughput.
 
-In tests in development environment the application spend on average 20 milliseconds for each response 
-and was able to quietly maintain interaction with 100 concurrent clients.
+During the tests in development environment the application spend, on average, 20 milliseconds for each response 
+and was able to quietly maintain interaction with 100 concurrent clients. 
+
+That means that in 8 hours the system would be able to process more than 1 million requests 
+reaching the established target.
 
 ## Branching
 
@@ -77,7 +82,8 @@ We noted that it is necessary a special subscription to access the code database
 
 We contacted the data supplier and they released our access but the credits have been consumed.
 
-We Mockamos these interactions for much of the development and rather used the free TOKEN but there came a time we need to see the application fact interacting with the service.
+We have mocked these interactions for much of the development 
+and rather used the free TOKEN but there came a time we need to see the application fact interacting with the service.
 
 To facilitate the change of TOKENS we created a system configuration that allows you to switch to another without much effort.
 
@@ -132,7 +138,7 @@ To create a Docker image of your application, and push it into your Docker regis
 
 With Maven, type: 
 
-    ./mvnw package -Pprod docker:build
+    ./mvnw clean package -Pprod docker:build
 
 This will package your application with the prod profile, and install the image.
 
@@ -155,6 +161,8 @@ Performance tests are run by [Gatling]() and written in Scala. They're located i
 
     ./mvnw gatling:execute
 
+[Docker]: https://www.docker.com/
+[JWT]: https://jwt.io/
 [JHipster]: https://jhipster.github.io/
 [Gatling]: http://gatling.io/
 [Node.js]: https://nodejs.org/
