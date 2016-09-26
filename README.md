@@ -138,7 +138,7 @@ To create a Docker image of your application, and push it into your Docker regis
 
 With Maven, type: 
 
-    ./mvnw package -Pprod docker:build
+    ./mvnw clean package -Pprod docker:build
 
 This will package your application with the prod profile, and install the image.
 
